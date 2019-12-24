@@ -9,7 +9,7 @@ from funciones import analisis
 tiempo_lectura = 0.5 # tiempo de lectura maximo 1 (1 segundo)
 
 # es establece los limites para el analisis de los datos recibidos
-umbral = 5000 # si sobrepasa este valor entra en analisis
+umbral = 4500 # si sobrepasa este valor entra en analisis
 lapso = 10 # en segundos
 
 user = {
@@ -28,7 +28,7 @@ c.subscribe()
 try:
 	while True:
 		c.unsubscribe()
-		print(c.datosraw)
+		#print(c.datosraw)
 		analisis(c.datosraw, umbral, lapso, tiempo_lectura)
 		time.sleep(tiempo_lectura)
 except KeyboardInterrupt:

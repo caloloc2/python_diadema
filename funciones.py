@@ -1,10 +1,8 @@
 import csv
-import numpy as np
 import matplotlib.pyplot as plt
 import time
 
-ahora = time.strftime("%c")
-nombre_archivo = ahora+'.csv'
+nombre_archivo = 'exportacion.csv' # nombre del archivo csv a exportar
 
 plt.ion() # decimos de forma explicita que sea interactivo
 # los datos que vamos a dibujar y a actualizar
@@ -61,16 +59,16 @@ def grafica(data):
         plt.plot(t8[-rango:],'-',linewidth=2,color='c')
         plt.plot(af4[-rango:],'-',linewidth=2,color='m')
 
-    plt.xlabel('Rango')
-    plt.ylabel('Amplitud')
-    plt.title('Grafica Convulsion')
+    plt.xlabel('Rango') # nombre al eje x
+    plt.ylabel('Amplitud') # nombre al eje y
+    plt.title('Grafica Convulsion') # nombre de la grafica
     plt.pause(0.05) # esto pausara el grafico
     plt.cla() # esto limpia la informacian del axis (el area blanca dondes se pintan las cosas.
 
 def analisis(data, umbral, lapso, tiempo_lectura):
     global convulsion, contador
     auxiliar = 1/tiempo_lectura # calcula el numero de iteraciones deberia calcular en 1 segundo
-    lapso_total = lapso * auxiliar
+    lapso_total = lapso * auxiliar # calcula el tiempo total a calcularse
 
     try:
         af3 = float(data[0])
@@ -81,8 +79,8 @@ def analisis(data, umbral, lapso, tiempo_lectura):
 
         # si alguno de los valores obtenidos supera al limite establecido (umbral)        
         if ((af3>umbral) or (t7>umbral) or (pz>umbral) or (t8>umbral) or (af4>umbral)):
-            # y si ademas, el tiempo es igual o supera al establecido (tiempo -> en segundos)
-            contador += auxiliar # guarda el ultivo valor            
+            # si cumple cualquiera de las condiciones, ademas debe sumar en tiempo            
+            contador += auxiliar
     except:
         print("No se pudo procesar toda la informacion")
     
