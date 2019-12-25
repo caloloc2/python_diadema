@@ -1,6 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
-import time
+import time, serial
 
 nombre_archivo = 'exportacion.csv' # nombre del archivo csv a exportar
 
@@ -66,6 +66,7 @@ def grafica(data):
     plt.cla() # esto limpia la informacian del axis (el area blanca dondes se pintan las cosas.
 
 def analisis(data, umbral, lapso, tiempo_lectura):
+
     global convulsion, contador
     auxiliar = 1/tiempo_lectura # calcula el numero de iteraciones deberia calcular en 1 segundo
     lapso_total = lapso * auxiliar # calcula el tiempo total a calcularse
@@ -89,8 +90,31 @@ def analisis(data, umbral, lapso, tiempo_lectura):
     
     if (convulsion): # si es verdadero
         print ('El paciente esta convulsionando')
+        envio_serial('a') # envia la letra a por puerto serial
         grafica(data) # grafica los valores
     else: # caso contrario (es decir, es falso)
         print ('El paciente no esta convulsionando')
+        envio_serial('b') # envia la letra a por puerto serial
 
     exportar_csv(data, nombre_archivo); # exporta los datos al archivo csv
+
+# funcion para el envio de datos por puerto serial
+def envio_serial(dato):
+    global puerto, mensaje
+
+    #obtiene el puerto a manejar desde el campo de la ventana
+    puerto_com = "COM3" # cambiar al puerto asignado
+
+    if (puerto_com != ""):
+        # Iniciando conexion serial
+        arduinoPort = serial.Serial(puerto_com, 9600, timeout=1)
+        flagCharacter = dato
+        
+        # Retardo para establecer la conexion serial
+        time.sleep(1.8) 
+        arduinoPort.write(flagCharacter)        
+
+        # Cerrando puerto serial
+        arduinoPort.close()
+    else:
+        print("No se ha indicado el puerto a usar.")        
